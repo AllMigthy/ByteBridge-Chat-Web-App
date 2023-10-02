@@ -1,0 +1,94 @@
+User Model:
+
+The User model represents the users of your chat application.
+
+Fields:
+
+name: Stores the name of the user.
+email: Stores the email address of the user, and it must be unique.
+password: Stores the hashed password of the user.
+pic: Stores the user's profile picture URL with a default avatar.
+isAdmin: Indicates whether the user is an admin or not.
+role: Represents the role of the user (e.g., employee, staff).
+salary: Stores the salary of the user.
+designation: Stores the designation or job title of the user.
+joiningDate: Records the date when the user joined the organization.
+timeStayed: Calculates and stores the duration the user has stayed in the organization in milliseconds.
+requestsSent: Stores chat requests sent by the user.
+Methods:
+
+matchPassword: A method to compare an entered password with the stored hashed password during authentication.
+Pre-save middleware: Hashes the user's password before saving it to the database and calculates the time stayed based on the joiningDate.
+Usage:
+
+This model is used to represent and manage user accounts in your application, including admins, employees, and staff.
+Chat Model:
+
+The Chat model represents individual chat conversations or groups in your application.
+
+Fields:
+
+chatName: Stores the name or title of the chat.
+isGroupChat: Indicates whether the chat is a group chat.
+users: An array of references to User objects representing the participants in the chat.
+latestMessage: A reference to the latest message sent in the chat.
+groupAdmin: A reference to the user who is the admin of the group chat.
+chatRequests: Stores chat requests related to the chat.
+Usage:
+
+This model is used to create and manage chat conversations between users, whether they are one-on-one chats or group chats.
+It also associates chat requests with specific chats.
+Message Model:
+
+The Message model represents individual chat messages.
+
+Fields:
+
+sender: A reference to the User object who sent the message.
+content: Stores the text content of the message.
+chat: A reference to the Chat object to which the message belongs.
+readBy: An array of references to User objects indicating who has read the message.
+timestamp: Records the timestamp when the message was sent.
+Usage:
+
+This model is used to create, store, and manage individual chat messages within a chat conversation.
+ChatRequest Model:
+
+The ChatRequest model represents chat requests sent by users to initiate chats.
+
+Fields:
+
+sender: A reference to the User object who sent the request.
+receiver: A reference to the User object who is the intended recipient of the request.
+status: Indicates the status of the chat request (e.g., accepted, rejected, pending).
+Usage:
+
+This model is used to create and manage chat requests. When a user sends a chat request to another user, a ChatRequest object is created to represent the request.
+
+ChatRequest Model:
+
+The ChatRequest model represents chat requests that users send to initiate conversations with other users. It tracks who sent the request, who the request is intended for, and the current status of the request (accepted, rejected, or pending).
+
+Here's a breakdown of the key components of the ChatRequest model:
+
+sender and receiver:
+
+sender: This field is a reference to the User object who initiated the chat request. It stores the user's ID.
+receiver: This field is a reference to the User object who is the intended recipient of the chat request. It also stores the user's ID.
+These fields establish a connection between the sender and the receiver of the chat request.
+status:
+
+The status field indicates the current status of the chat request. It's an enum (enumeration) field, meaning it can only have one of the predefined values: "accepted," "rejected," or "pending."
+Initially, when a user sends a chat request, its status is set to "pending" by default.
+The status can be updated based on whether the recipient accepts or rejects the request or any other logic you implement in your application.
+{ timestamps: true }:
+
+This option in the model's schema automatically adds two timestamp fields, createdAt and updatedAt, to each ChatRequest document.
+createdAt stores the date and time when the chat request document was created.
+updatedAt stores the date and time when the chat request document was last updated. This can be useful for tracking when the status of the request changes.
+Usage:
+
+When a user wants to initiate a chat with another user, they create a new ChatRequest document with the sender and receiver fields set accordingly.
+The default status of the request is "pending."
+You can implement logic in your application to allow the recipient to accept or reject the request, which would update the status.
+Depending on the status, you can decide whether to create a chat conversation (Chat model) between the sender and receiver or take other actions in your chat application.
