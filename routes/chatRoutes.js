@@ -6,15 +6,16 @@ const {
   removeFromGroup,
   addToGroup,
   renameGroup,
-  acceptChatRequest, // New route for admin to accept requests
-  rejectChatRequest, // New route for admin to reject requests
+  acceptChatRequest, // New route to accept requests
+  rejectChatRequest, // New route to reject requests
+  getPendingRequests
 } = require("../controllers/chatControllers");
 const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 // Access chat (individual or create new)
-router.route("/access").post(protect, accessChat);
+router.route("/request").post(protect, accessChat);
 
 // Fetch user's chats
 router.route("/fetch").get(protect, fetchChats);
@@ -31,10 +32,12 @@ router.route("/group/remove").put(protect, removeFromGroup);
 // Add a user to a group chat
 router.route("/group/add").put(protect, addToGroup);
 
-// Admin accepts a chat request
-router.route("/admin/accept/:requestId").put(protect, acceptChatRequest);
+// accepts a chat request
+router.route("/accept/:requestId").patch(protect, acceptChatRequest);
 
-// Admin rejects a chat request
-router.route("/admin/reject/:requestId").put(protect, rejectChatRequest);
+// rejects a chat request
+router.route("/reject/:requestId").patch(protect, rejectChatRequest);
+
+router.get("/pending-requests", protect, getPendingRequests);
 
 module.exports = router;

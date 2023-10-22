@@ -32,11 +32,10 @@ const sendMessage = async (req, res) => {
   try {
     let message = await Message.create(newMessage);
 
-    message = await message
-      .populate([
-        { path: "sender", select: "name pic" },
-        "chat",
-      ]);
+    message = await message.populate([
+      { path: "sender", select: "name pic" },
+      "chat",
+    ]);
 
     message = await User.populate(message, {
       path: "chat.users",

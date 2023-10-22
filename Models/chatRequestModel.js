@@ -11,7 +11,6 @@ const chatRequestSchema = mongoose.Schema(
     }, // Request status
     chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" }, // Reference to the chat
   },
-  
   { timestamps: true }
 );
 
